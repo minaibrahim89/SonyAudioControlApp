@@ -1,0 +1,65 @@
+﻿<Page x:Class="SonyAudioControl.Views.DiscoveryView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:viewModels="using:SonyAudioControl.ViewModels"
+      xmlns:base="using:SonyAudioControl.ViewModels.Base"
+      xmlns:muxc="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:converters="using:SonyAudioControl.Converters"
+      mc:Ignorable="d"
+      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+      base:ViewModelLocator.AutoWireViewModel="EnableAndInitialize">
+    <Page.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </Page.Resources>
+
+    <Grid HorizontalAlignment="Center"
+          VerticalAlignment="Center">
+        <StackPanel Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    Spacing="16">
+            <muxc:ProgressRing IsActive="True"
+                               Width="64"
+                               Height="64"
+                               HorizontalAlignment="Center" />
+            <TextBlock Text="Discovering devices..." />
+        </StackPanel>
+
+        <Grid Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=invert}">
+            <StackPanel Visibility="{Binding DevicesFound, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=invert}"
+                        Spacing="16">
+                <TextBlock Text="No devices were found." />
+                <Button HorizontalAlignment="Center"
+                        Content="Search again"
+                        Command="{Binding RetryCommand}" />
+            </StackPanel>
+
+            <GridView ItemsSource="{Binding Devices}"
+                      Visibility="{Binding DevicesFound, Converter={StaticResource BooleanToVisibilityConverter}}"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      SelectionMode="Single">
+                <GridView.ItemTemplate>
+                    <DataTemplate x:DataType="viewModels:DeviceViewModel">
+                        <Button Padding="32"
+                                Command="{Binding SelectDeviceCommand}"
+                                CommandParameter="{Binding}">
+                            <StackPanel>
+                                <Image Source="{Binding LargeIconUrl}"
+                                       Width="{Binding LargeIconWidth}"
+                                       Height="{Binding LargeIconHeight}" />
+                                <TextBlock Text="{Binding Name}"
+                                           FontSize="16"
+                                           HorizontalAlignment="Center" />
+                                <TextBlock Text="{Binding ModelName}"
+                                           FontWeight="Bold"
+                                           FontSize="14"
+                                           HorizontalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
+        </Grid>
+    </Grid>
+</Page>
