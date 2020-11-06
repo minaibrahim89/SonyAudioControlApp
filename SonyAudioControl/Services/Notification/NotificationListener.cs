@@ -17,9 +17,10 @@ namespace SonyAudioControl.Services.Notification
         public async Task SubscribeForNotificationsAsync(string deviceUrl, Action<DeviceNotification> onNotification)
         {
             var uri = new Uri(deviceUrl);
-            SubscribeForNotificationsAsync(uri, "audio", onNotification);
-            SubscribeForNotificationsAsync(uri, "system", onNotification);
-            SubscribeForNotificationsAsync(uri, "avContent", onNotification);
+            await Task.WhenAll(
+                SubscribeForNotificationsAsync(uri, "audio", onNotification),
+                SubscribeForNotificationsAsync(uri, "system", onNotification),
+                SubscribeForNotificationsAsync(uri, "avContent", onNotification));
         }
 
         private async Task SubscribeForNotificationsAsync(Uri deviceUri, string lib, Action<DeviceNotification> onNotification)

@@ -25,6 +25,11 @@ namespace SonyAudioControl.Model.UI
         {
             _execute.Invoke();
         }
+
+        public void NotifyCanExecuteChanged()
+        {
+            CanExecuteChanged?.Invoke(this, new EventArgs());
+        }
     }
 
     public class Command<T> : ICommand
@@ -48,6 +53,11 @@ namespace SonyAudioControl.Model.UI
         public void Execute(object parameter)
         {
             _execute.Invoke((T)parameter);
+        }
+
+        public void NotifyCanExecuteChanged()
+        {
+            CanExecuteChanged?.Invoke(this, new EventArgs());
         }
     }
 }

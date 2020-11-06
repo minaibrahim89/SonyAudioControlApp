@@ -24,14 +24,16 @@ namespace SonyAudioControl.Services.Navigation
             return NavigateToAsync(typeof(TViewModel), data, transitionInfo ?? new CommonNavigationTransitionInfo());
         }
 
-        private async Task NavigateToAsync(Type viewModelType, object data, NavigationTransitionInfo transitionInfo)
+        private Task NavigateToAsync(Type viewModelType, object data, NavigationTransitionInfo transitionInfo)
         {
             if (!typeof(ViewModelBase).IsAssignableFrom(viewModelType))
-                return;
+                return Task.CompletedTask;
 
             var pageType = GetPageTypeForViewModel(viewModelType);
 
             MainFrame.Navigate(pageType, data, transitionInfo);
+            
+            return Task.CompletedTask;
         }
 
         private Type GetPageTypeForViewModel(Type viewModelType)

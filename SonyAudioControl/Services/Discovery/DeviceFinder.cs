@@ -22,40 +22,26 @@ namespace SonyAudioControl.Services.Discovery
 
         public async Task<IEnumerable<DeviceDescription>> SearchForUpnpDevicesAsync()
         {
-            try
+            using (var deviceLocator = new SsdpDeviceLocator())
             {
-                using (var deviceLocator = new SsdpDeviceLocator())
-                {
-                    var foundDevices = await deviceLocator.SearchAsync("urn:schemas-sony-com:service:ScalarWebAPI:1");
+                var foundDevices = await deviceLocator.SearchAsync("urn:schemas-sony-com:service:ScalarWebAPI:1");
 
-                    return await Task.WhenAll(foundDevices.Select(d => GetDeviceDescription(d.DescriptionLocation)).Where(x => x != null));
-                }
-            }
-            catch (Exception ex)
-            {
-                throw;
+                return await Task.WhenAll(foundDevices.Select(d => GetDeviceDescription(d.DescriptionLocation)).Where(x => x != null));
             }
         }
 
         private async Task<DeviceDescription> GetDeviceDescription(Uri descriptionLocation)
         {
-            try
+            using (var response = await _httpClient.GetAsync(descriptionLocation))
             {
-                using (var response = await _httpClient.GetAsync(descriptionLocation))
-                {
-                    if (response.StatusCode != HttpStatusCode.OK)
-                        return null;
+                if (response.StatusCode != HttpStatusCode.OK)
+                    return null;
 
-                    var xmlStream = await response.Content.ReadAsStreamAsync();
-                    var description = (DeviceDescription)new XmlSerializer(typeof(DeviceDescription)).Deserialize(xmlStream);
-                    description.DescriptionLocation = descriptionLocation;
+                var xmlStream = await response.Content.ReadAsStreamAsync();
+                var description = (DeviceDescription)new XmlSerializer(typeof(DeviceDescription)).Deserialize(xmlStream);
+                description.DescriptionLocation = descriptionLocation;
 
-                    return description;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw;
+                return description;
             }
         }
     }

@@ -96,7 +96,7 @@ namespace SonyAudioControl.ViewModels
             IsMuted = volumeInfo.IsMuted;
             Volume = volumeInfo.Volume;
 
-            await _notificationListener.SubscribeForNotificationsAsync(_deviceUrl, HandleNotification);
+            _ = _notificationListener.SubscribeForNotificationsAsync(_deviceUrl, HandleNotification);
         }
 
         private void HandleNotification(DeviceNotification notification)

@@ -16,10 +16,10 @@ namespace SonyAudioControl.Views
             InitializeComponent();
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             var viewModel = (DeviceControlViewModel)DataContext;
-            viewModel.InitializeAsync(e.Parameter);
+            await viewModel.InitializeAsync(e.Parameter);
         }
     }
 }
