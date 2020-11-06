@@ -15,20 +15,34 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <TextBlock Text="{Binding DeviceName}"
-                       VerticalAlignment="Center"
-                       Margin="16,0,0,0"
-                       FontSize="24"
-                       FontWeight="ExtraLight" />
+            <StackPanel Orientation="Horizontal"
+                        Spacing="0">
+                <AppBarToggleButton Style="{StaticResource CommandBarFlyoutAppBarToggleButtonStyle}"
+                                    VerticalAlignment="Center"
+                                    IsChecked="{Binding IsPowerOn}"                                    
+                                    Command="{Binding TogglePowerCommand}">
+                    <AppBarToggleButton.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets"
+                                  FontWeight="Light"
+                                  VerticalAlignment="Center"
+                                  Glyph="&#xE7E8;" />
+                    </AppBarToggleButton.Icon>
+                </AppBarToggleButton>
+                <TextBlock Text="{Binding DeviceName}"
+                           d:Text="Sound bar(HT-ZF9)"
+                           VerticalAlignment="Center"
+                           Margin="8,0,0,0"
+                           FontSize="24"
+                           FontWeight="ExtraLight" />
+            </StackPanel>
 
             <StackPanel Grid.Column="1"
                         Orientation="Horizontal"
                         HorizontalAlignment="Right">
                 <AppBarButton Icon="SwitchApps"
-                              Width="Auto"
-                              Padding="8"
                               Label="Bluetooth Audio"
-                              Style="{StaticResource AppBarButtonRevealStyle}">
+                              MinWidth="80"
+                              Style="{StaticResource AppBarButtonRevealOverflowStyle}">
                     <AppBarButton.Flyout>
                         <MenuFlyout Placement="Bottom">
                             <MenuFlyoutItem Text="TV" />
@@ -40,10 +54,11 @@
                         </MenuFlyout>
                     </AppBarButton.Flyout>
                 </AppBarButton>
-                <AppBarButton Icon="{Binding VolumeIcon}"
+                <AppBarButton Icon="{Binding Volume.VolumeIcon}"
+                              d:Icon="Volume"
                               Label="Volume"
-                              Padding="8"
-                              Style="{StaticResource AppBarButtonRevealStyle}">
+                              MinWidth="80"
+                              Style="{StaticResource AppBarButtonRevealOverflowStyle}">
                     <AppBarButton.Flyout>
                         <MenuFlyout Placement="BottomEdgeAlignedRight">
                             <MenuFlyoutItem Width="Auto"
@@ -54,23 +69,23 @@
                                         <StackPanel Orientation="Horizontal"
                                                     Margin="8,0"
                                                     Spacing="8">
-                                            <AppBarButton Icon="{Binding MuteIcon}"
+                                            <AppBarButton Icon="{Binding Volume.MuteIcon}"
                                                           Width="40"
                                                           Height="40"
                                                           VerticalAlignment="Center"
                                                           VerticalContentAlignment="Center"
-                                                          Command="{Binding ToggleMuteCommand}" />
+                                                          Command="{Binding Volume.ToggleMuteCommand}" />
 
                                             <Slider x:Name="Slider"
                                                     VerticalAlignment="Center"
                                                     VerticalContentAlignment="Center"
                                                     Width="160"
                                                     Height="Auto"
-                                                    TickFrequency="{Binding VolumeStep}"
+                                                    TickFrequency="{Binding Volume.StepSize}"
                                                     TickPlacement="None"
-                                                    Maximum="{Binding MaxVolume}"
-                                                    Minimum="{Binding MinVolume}"
-                                                    Value="{Binding Volume, Mode=TwoWay}" />
+                                                    Maximum="{Binding Volume.MaxValue}"
+                                                    Minimum="{Binding Volume.MinValue}"
+                                                    Value="{Binding Volume.Value, Mode=TwoWay}" />
 
                                             <TextBlock Text="{Binding Value, ElementName=Slider}"
                                                        VerticalAlignment="Center"

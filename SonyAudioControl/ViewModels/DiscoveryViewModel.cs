@@ -81,6 +81,8 @@ namespace SonyAudioControl.ViewModels
         {
             var deviceDescriptions = await _deviceFinder.SearchForUpnpDevicesAsync();
 
+            await _storage.SaveAsync("devices", deviceDescriptions);
+
             return deviceDescriptions.Select(d => new DeviceViewModel(d.Device, d.DescriptionLocation));
         }
 

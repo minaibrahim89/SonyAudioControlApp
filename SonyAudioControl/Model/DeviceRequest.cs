@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using Newtonsoft.Json;
 
 namespace SonyAudioControl.Model
@@ -15,6 +15,6 @@ namespace SonyAudioControl.Model
         public string Version { get; set; }
 
         [JsonProperty("params")]
-        public object[] Params { get; set; }
+        public object[] Params { get; set; } = Array.Empty<object>();
     }
 }

@@ -1,37 +1,32 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows.Input;
 using SonyAudioControl.Model;
 using SonyAudioControl.Model.UI;
 using SonyAudioControl.Services.AudioControl;
 using SonyAudioControl.Services.Notification;
+using SonyAudioControl.Services.SystemControl;
 using SonyAudioControl.ViewModels.Base;
-using Windows.UI.Xaml.Controls;
 
 namespace SonyAudioControl.ViewModels
 {
     public class DeviceControlViewModel : ViewModelBase
     {
+        private readonly ISystemControl _systemControl;
         private readonly IAudioControl _audioControl;
         private readonly INotificationListener _notificationListener;
         private string _deviceUrl;
         private string _deviceName;
-        private IconElement _volumeIcon;
-        private IconElement _muteIcon;
-        private int _volume;
-        private int _maxVolume;
-        private int minVolume;
-        private int _volumeStep;
-        private bool _isMuted;
+        private bool _isPowerOn;
 
-        public DeviceControlViewModel(IAudioControl audioControl, INotificationListener notificationListener)
+        public DeviceControlViewModel(ISystemControl systemControl, IAudioControl audioControl, INotificationListener notificationListener)
         {
+            _systemControl = systemControl;
             _audioControl = audioControl;
             _notificationListener = notificationListener;
-            _volumeIcon = new SymbolIcon(Symbol.Volume);
-            _muteIcon = new SymbolIcon(Symbol.Volume);
 
-            ToggleMuteCommand = new Command(ToggleMuteAsync);
+            Volume = new VolumeViewModel(audioControl);
+
+            TogglePowerCommand = new Command(async() => await TogglePowerAsync());
         }
 
         public string DeviceName
@@ -40,84 +35,51 @@ namespace SonyAudioControl.ViewModels
             set => SetProperty(ref _deviceName, value);
         }
 
-        public int MaxVolume
+        public bool IsPowerOn
         {
-            get => _maxVolume;
-            set => SetProperty(ref _maxVolume, value);
+            get => _isPowerOn; 
+            set => SetProperty(ref _isPowerOn, value);
         }
 
-        public int MinVolume
-        {
-            get => minVolume;
-            set => SetProperty(ref minVolume, value);
-        }
+        public VolumeViewModel Volume { get; }
 
-        public int VolumeStep
-        {
-            get => _volumeStep;
-            set => SetProperty(ref _volumeStep, value);
-        }
-        
-        public int Volume
-        {
-            get => _volume;
-            set => SetProperty(ref _volume, value, onChanged: SetVolumeAsync);
-        }
-
-        public bool IsMuted
-        {
-            get => _isMuted;
-            set => SetProperty(ref _isMuted, value, onChanged: isMuted => MuteIcon = new SymbolIcon(IsMuted ? Symbol.Mute : Symbol.Volume));
-        }
-
-        public IconElement MuteIcon
-        {
-            get => _muteIcon;
-            set => SetProperty(ref _muteIcon, value, onChanged: _ => VolumeIcon = new SymbolIcon(IsMuted ? Symbol.Mute : Symbol.Volume));
-        }
-
-        public IconElement VolumeIcon
-        {
-            get => _volumeIcon;
-            set => SetProperty(ref _volumeIcon, value);
-        }
-
-        public ICommand ToggleMuteCommand { get; set; }
+        public ICommand TogglePowerCommand { get; }
 
         public override async Task InitializeAsync(object args)
         {
             var device = (DeviceViewModel)args;
             _deviceUrl = device.BaseUrl;
             DeviceName = $"{device.Name} ({device.ModelName})";
-            var volumeInfo = await _audioControl.GetVolumeInfoAsync(_deviceUrl);
-            MaxVolume = volumeInfo.MaxVolume;
-            MinVolume = volumeInfo.MinVolume;
-            VolumeStep = volumeInfo.Step;
-            IsMuted = volumeInfo.IsMuted;
-            Volume = volumeInfo.Volume;
+            await SetIsPowerOnAsync();
+            await Volume.InitializeAsync(device);
 
             _ = _notificationListener.SubscribeForNotificationsAsync(_deviceUrl, HandleNotification);
         }
 
+        private async Task SetIsPowerOnAsync()
+        {
+            var powerStatus = await _systemControl.GetPowerStatusAsync(_deviceUrl);
+
+            IsPowerOn = powerStatus.Status == "active";
+        }
+
         private void HandleNotification(DeviceNotification notification)
         {
-            if (notification.Method == "notifyVolumeInformation")
+            switch (notification.Method)
             {
-                Volume = (int)notification.Params[0].volume;
-                IsMuted = notification.Params[0].mute == "on";
+                case "notifyPowerStatus": HandlePowerNotification(notification); break;
+                case "notifyVolumeInformation": Volume.HandleVolumeNotification(notification); break;
             }
         }
 
-        private void SetVolumeAsync(int volume)
+        private void HandlePowerNotification(DeviceNotification notification)
         {
-            _audioControl.SetVolumeAsync(_deviceUrl, volume);
+            IsPowerOn = notification.Params[0].status == "active";
         }
 
-        private async void ToggleMuteAsync()
+        private async Task TogglePowerAsync()
         {
-            await _audioControl.SetMuteAsync(_deviceUrl, !IsMuted);
-            
-            IsMuted ^= true;
+            await _systemControl.SetPowerStatusAsync(_deviceUrl, !IsPowerOn);
         }
     }
 }

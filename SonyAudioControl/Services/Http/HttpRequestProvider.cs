@@ -34,7 +34,7 @@ namespace SonyAudioControl.Services.Http
 
             var json = await response.Content.ReadAsStringAsync();
 
-            return json.DeJson<DeviceResponse<T[]>>().Result.FirstOrDefault()?.FirstOrDefault();
+            return json.DeJson<DeviceResponse<T>>().Result.FirstOrDefault();
         }
     }
 }

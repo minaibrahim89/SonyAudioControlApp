@@ -23,9 +23,9 @@ namespace SonyAudioControl.Services.AudioControl
                 Params = new[] { new { output = "" } }
             };
 
-            var response = await _httpRequestProvider.PostAsync<VolumeInfo>(Path.Combine(deviceUrl, "audio"), request);
+            var response = await _httpRequestProvider.PostAsync<VolumeInfo[]>($"{deviceUrl}/audio", request);
 
-            return response;
+            return response[0];
         }
 
         public async Task SetVolumeAsync(string deviceUrl, int volume)
@@ -37,7 +37,7 @@ namespace SonyAudioControl.Services.AudioControl
                 Params = new[] { new { output = "", volume = volume.ToString() } }
             };
 
-            await _httpRequestProvider.PostAsync<object>(Path.Combine(deviceUrl, "audio"), request);
+            await _httpRequestProvider.PostAsync<object>($"{deviceUrl}/audio", request);
         }
 
         public async Task SetMuteAsync(string deviceUrl, bool mute)

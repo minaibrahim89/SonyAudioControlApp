@@ -131,6 +131,7 @@
     <Compile Include="Model\DeviceRequest.cs" />
     <Compile Include="Model\DeviceResponse.cs" />
     <Compile Include="Model\DeviceNotification.cs" />
+    <Compile Include="Model\PowerStatus.cs" />
     <Compile Include="Model\UI\Command.cs" />
     <Compile Include="Model\VolumeInfo.cs" />
     <Compile Include="Services\AudioControl\AudioControl.cs" />
@@ -143,6 +144,8 @@
     <Compile Include="Services\Notification\NotificationListener.cs" />
     <Compile Include="Services\Storage\IStorage.cs" />
     <Compile Include="Services\Storage\LocalStorage.cs" />
+    <Compile Include="Services\SystemControl\ISystemControl.cs" />
+    <Compile Include="Services\SystemControl\SystemControl.cs" />
     <Compile Include="ViewModels\Base\ViewModelBase.cs" />
     <Compile Include="ViewModels\Base\ViewModelLocator.cs" />
     <Compile Include="ViewModels\DeviceControlViewModel.cs" />
@@ -151,6 +154,7 @@
     <Compile Include="Services\Discovery\DeviceFinder.cs" />
     <Compile Include="Services\Discovery\IDeviceFinder.cs" />
     <Compile Include="ViewModels\DiscoveryViewModel.cs" />
+    <Compile Include="ViewModels\VolumeViewModel.cs" />
     <Compile Include="Views\DeviceControlView.xaml.cs">
       <DependentUpon>DeviceControlView.xaml</DependentUpon>
     </Compile>

@@ -6,6 +6,7 @@ using SonyAudioControl.Services.Http;
 using SonyAudioControl.Services.Navigation;
 using SonyAudioControl.Services.Notification;
 using SonyAudioControl.Services.Storage;
+using SonyAudioControl.Services.SystemControl;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -51,6 +52,7 @@ namespace SonyAudioControl.ViewModels.Base
             builder.RegisterType<Navigation>().As<INavigation>().SingleInstance();
             builder.RegisterType<LocalStorage>().As<IStorage>().SingleInstance();
             builder.RegisterType<DeviceFinder>().As<IDeviceFinder>().SingleInstance();
+            builder.RegisterType<SystemControl>().As<ISystemControl>().SingleInstance();
             builder.RegisterType<AudioControl>().As<IAudioControl>().SingleInstance();
             builder.RegisterType<HttpRequestProvider>().As<IHttpRequestProvider>().SingleInstance();
             builder.RegisterType<NotificationListener>().As<INotificationListener>().SingleInstance();
