@@ -5,11 +5,11 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:base="using:SonyAudioControl.ViewModels.Base"
       mc:Ignorable="d"
-      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+      Background="{ThemeResource SystemControlAcrylicWindowBrush}"
       base:ViewModelLocator.AutoWireViewModel="Enable">
-
+    
     <StackPanel>
-        <Grid>
+        <Grid Background="{ThemeResource SystemControlAcrylicElementBrush}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -17,7 +17,8 @@
 
             <StackPanel Orientation="Horizontal"
                         Spacing="0">
-                <AppBarToggleButton Style="{StaticResource CommandBarFlyoutAppBarToggleButtonStyle}"
+                <AppBarToggleButton Style="{StaticResource AppBarToggleButtonRevealStyle}"
+                                    Label="Power"
                                     VerticalAlignment="Center"
                                     IsChecked="{Binding IsPowerOn}"
                                     Command="{Binding TogglePowerCommand}">
