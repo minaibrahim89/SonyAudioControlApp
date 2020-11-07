@@ -50,5 +50,53 @@ namespace SonyAudioControl.Services.AvContent
 
             await _httpRequestProvider.PostAsync<object>($"{deviceUrl}/avContent", request);
         }
+
+        public async Task TogglePausePlayingContentAsync(string deviceUrl)
+        {
+            var request = new DeviceRequest
+            {
+                Method = "pausePlayingContent",
+                Version = "1.1",
+                Params = new[] { new { output = "" } }
+            };
+
+            await _httpRequestProvider.PostAsync<object>($"{deviceUrl}/avContent", request);
+        }
+
+        public async Task SetPlayNextContentAsync(string deviceUrl)
+        {
+            var request = new DeviceRequest
+            {
+                Method = "setPlayNextContent",
+                Version = "1.0",
+                Params = new[] { new { output = "" } }
+            };
+
+            await _httpRequestProvider.PostAsync<object>($"{deviceUrl}/avContent", request);
+        }
+
+        public async Task SetPlayPreviousContentAsync(string deviceUrl)
+        {
+            var request = new DeviceRequest
+            {
+                Method = "setPlayPreviousContent",
+                Version = "1.0",
+                Params = new[] { new { output = "" } }
+            };
+
+            await _httpRequestProvider.PostAsync<object>($"{deviceUrl}/avContent", request);
+        }
+
+        public async Task ScanPlayingContentAsync(string deviceUrl, bool backward)
+        {
+            var request = new DeviceRequest
+            {
+                Method = "scanPlayingContent",
+                Version = "1.0",
+                Params = new[] { new { direction = backward ? "bwd" : "fwd", output = "" } }
+            };
+
+            await _httpRequestProvider.PostAsync<object>($"{deviceUrl}/avContent", request);
+        }
     }
 }

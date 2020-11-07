@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Diagnostics;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -27,14 +28,22 @@ namespace SonyAudioControl.Services.Http
         public async Task<T> PostAsync<T>(string url, DeviceRequest request)
             where T : class
         {
-            var response = await _httpClient.PostAsync(url, new StringContent(request.ToJson(), Encoding.UTF8, "application/json"));
+            try
+            {
+                var response = await _httpClient.PostAsync(url, new StringContent(request.ToJson(), Encoding.UTF8, "application/json"));
 
-            if (!response.IsSuccessStatusCode)
-                return default;
+                if (!response.IsSuccessStatusCode)
+                    return default;
 
-            var json = await response.Content.ReadAsStringAsync();
+                var json = await response.Content.ReadAsStringAsync();
 
-            return json.DeJson<DeviceResponse<T>>().Result.FirstOrDefault();
+                return json.DeJson<DeviceResponse<T>>().Result.FirstOrDefault();
+            }
+            catch (global::System.Exception ex)
+            {
+                Debug.WriteLine("Bad request: " + ex);
+                throw;
+            }
         }
     }
 }

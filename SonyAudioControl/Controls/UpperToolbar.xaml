@@ -3,6 +3,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+             xmlns:i="using:Microsoft.Xaml.Interactivity"
              mc:Ignorable="d"
              d:DesignHeight="60">
 
@@ -14,18 +16,31 @@
 
         <StackPanel Orientation="Horizontal"
                     Spacing="0">
-            <AppBarToggleButton Style="{StaticResource AppBarToggleButtonRevealStyle}"
-                                Label="Power"
-                                VerticalAlignment="Center"
-                                IsChecked="{Binding IsPowerOn}"
-                                Command="{Binding TogglePowerCommand}">
-                <AppBarToggleButton.Icon>
+            <AppBarButton Style="{StaticResource AppBarButtonRevealStyle}"
+                          Label="Power"
+                          VerticalAlignment="Center"
+                          Command="{Binding TogglePowerCommand}">
+                <AppBarButton.Icon>
                     <FontIcon FontFamily="Segoe MDL2 Assets"
                               FontWeight="Light"
                               VerticalAlignment="Center"
                               Glyph="&#xE7E8;" />
-                </AppBarToggleButton.Icon>
-            </AppBarToggleButton>
+                </AppBarButton.Icon>
+                <i:Interaction.Behaviors>
+                    <core:DataTriggerBehavior Binding="{Binding IsPowerOn}"
+                                              ComparisonCondition="Equal"
+                                              Value="True">
+                        <core:ChangePropertyAction PropertyName="Foreground"
+                                                   Value="{ThemeResource SystemAccentColor}" />
+                    </core:DataTriggerBehavior>
+                    <core:DataTriggerBehavior Binding="{Binding IsPowerOn}"
+                                              ComparisonCondition="Equal"
+                                              Value="False">
+                        <core:ChangePropertyAction PropertyName="Foreground"
+                                                   Value="{ThemeResource AppBarItemForegroundThemeBrush}" />
+                    </core:DataTriggerBehavior>
+                </i:Interaction.Behaviors>
+            </AppBarButton>
             <TextBlock Text="{Binding DeviceName}"
                        d:Text="Sound bar (HT-ZF9)"
                        VerticalAlignment="Center"

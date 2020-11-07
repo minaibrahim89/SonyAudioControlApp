@@ -1,0 +1,90 @@
+﻿<UserControl x:Class="SonyAudioControl.Controls.MediaToolbar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:converters="using:SonyAudioControl.Converters"
+             mc:Ignorable="d"
+             d:DesignHeight="120">
+
+    <UserControl.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisiblityConverter"/>
+    </UserControl.Resources>
+    <Grid ColumnSpacing="32"
+          Background="{ThemeResource SystemControlAcrylicElementBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="120" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Background="{ThemeResource SystemChromeMediumColor}">
+            <Image Source="{Binding InputControl.PlaybackThumbnailUrl, TargetNullValue='ms-appx:///Assets/Images/Music.png', FallbackValue='ms-appx:///Assets/Images/Music.png'}"
+                   Width="120"
+                   Height="120"
+                   Stretch="UniformToFill" />
+        </Grid>
+
+        <Grid Grid.Column="1"
+              HorizontalAlignment="Stretch"
+              VerticalAlignment="Center"
+              ColumnSpacing="16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <AppBarButton Grid.Column="0"
+                          Icon="{Binding InputControl.PlayPauseIcon}"
+                          d:Icon="Play"
+                          Command="{Binding InputControl.TogglePauseCommand}"
+                          Style="{StaticResource CommandBarFlyoutAppBarButtonStyle}" />
+            <AppBarButton Grid.Column="1"
+                          Icon="Previous"
+                          Command="{Binding InputControl.PlayPreviousCommand}"
+                          IsHoldingEnabled="False"
+                          Style="{StaticResource CommandBarFlyoutAppBarButtonStyle}" />
+            <AppBarButton Grid.Column="2"
+                          Icon="Next"
+                          Command="{Binding InputControl.PlayNextCommand}"
+                          IsHoldingEnabled="True"
+                          Holding="AppBarButton_Holding"
+                          Style="{StaticResource CommandBarFlyoutAppBarButtonStyle}" />
+
+            <StackPanel Grid.Column="3"
+                        HorizontalAlignment="Stretch"
+                        Spacing="8"
+                        Margin="0,0,32,0">
+                <TextBlock Text="{Binding InputControl.CurrentContent.DisplayTitle}" />
+                <TextBlock Text="{Binding InputControl.CurrentContent.Artist}"
+                           FontWeight="Light" />
+
+                <Grid ColumnSpacing="16"
+                      Visibility="{Binding InputControl.ShowPlaybackProgress, Converter={StaticResource BooleanToVisiblityConverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0"
+                               VerticalAlignment="Center"
+                               Text="{Binding InputControl.ElapsedPlaybackTimeText}"
+                               d:Text="00:00:00" />
+
+                    <ProgressBar Grid.Column="1"
+                                 Value="{Binding InputControl.CurrentContent.PositionMsec}"
+                                 Maximum="{Binding InputControl.CurrentContent.DurationMsec}"
+                                 IsEnabled="False"
+                                 VerticalContentAlignment="Center" />
+
+                    <TextBlock Grid.Column="2"
+                               VerticalAlignment="Center"
+                               Text="{Binding InputControl.PlaybackDurationText}"
+                               d:Text="00:01:00" />
+                </Grid>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

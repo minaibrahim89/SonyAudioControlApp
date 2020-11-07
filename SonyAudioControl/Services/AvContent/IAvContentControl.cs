@@ -10,5 +10,13 @@ namespace SonyAudioControl.Services.AvContent
         Task<PlaybackContent> GetPlayingContentInfoAsync(string deviceUrl);
 
         Task SetPlayContentAsync(string deviceUrl, string source);
+
+        Task TogglePausePlayingContentAsync(string deviceUrl);
+
+        Task SetPlayNextContentAsync(string deviceUrl);
+        
+        Task SetPlayPreviousContentAsync(string deviceUrl);
+
+        Task ScanPlayingContentAsync(string deviceUrl, bool backward);
     }
 }

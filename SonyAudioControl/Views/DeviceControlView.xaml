@@ -9,7 +9,15 @@
       Background="{ThemeResource SystemControlAcrylicWindowBrush}"
       base:ViewModelLocator.AutoWireViewModel="Enable">
     
-    <StackPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
         <controls:UpperToolbar x:Name="UpperToolbar"/>
-    </StackPanel>
+
+        <controls:MediaToolbar x:Name="MediaToolbar" Grid.Row="2"/>
+    </Grid>
 </Page>
