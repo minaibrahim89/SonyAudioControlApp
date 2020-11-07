@@ -1,0 +1,91 @@
+﻿<UserControl x:Class="SonyAudioControl.Controls.UpperToolbar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignHeight="60">
+
+    <Grid Background="{ThemeResource SystemControlAcrylicElementBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Orientation="Horizontal"
+                    Spacing="0">
+            <AppBarToggleButton Style="{StaticResource AppBarToggleButtonRevealStyle}"
+                                Label="Power"
+                                VerticalAlignment="Center"
+                                IsChecked="{Binding IsPowerOn}"
+                                Command="{Binding TogglePowerCommand}">
+                <AppBarToggleButton.Icon>
+                    <FontIcon FontFamily="Segoe MDL2 Assets"
+                              FontWeight="Light"
+                              VerticalAlignment="Center"
+                              Glyph="&#xE7E8;" />
+                </AppBarToggleButton.Icon>
+            </AppBarToggleButton>
+            <TextBlock Text="{Binding DeviceName}"
+                       d:Text="Sound bar (HT-ZF9)"
+                       VerticalAlignment="Center"
+                       Margin="8,0,0,0"
+                       FontSize="24"
+                       FontWeight="ExtraLight" />
+        </StackPanel>
+
+        <StackPanel Grid.Column="1"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right">
+            <AppBarButton x:Name="InputSelector"
+                          Icon="SwitchApps"
+                          Label="{Binding InputControl.CurrentSourceName}"
+                          d:Label="TV"
+                          MinWidth="80"
+                          Style="{StaticResource AppBarButtonRevealOverflowStyle}" />
+            <AppBarButton Icon="{Binding Volume.VolumeIcon}"
+                          d:Icon="Volume"
+                          Label="Volume"
+                          MinWidth="80"
+                          Style="{StaticResource AppBarButtonRevealOverflowStyle}">
+                <AppBarButton.Flyout>
+                    <MenuFlyout Placement="BottomEdgeAlignedRight">
+                        <MenuFlyoutItem Width="Auto"
+                                        Height="Auto"
+                                        HorizontalContentAlignment="Center">
+                            <MenuFlyoutItem.Template>
+                                <ControlTemplate>
+                                    <StackPanel Orientation="Horizontal"
+                                                Margin="8,0"
+                                                Spacing="8">
+                                        <AppBarButton Icon="{Binding Volume.MuteIcon}"
+                                                      Width="40"
+                                                      Height="40"
+                                                      VerticalAlignment="Center"
+                                                      VerticalContentAlignment="Center"
+                                                      Command="{Binding Volume.ToggleMuteCommand}" />
+
+                                        <Slider x:Name="Slider"
+                                                VerticalAlignment="Center"
+                                                VerticalContentAlignment="Center"
+                                                Width="160"
+                                                Height="Auto"
+                                                TickFrequency="{Binding Volume.StepSize}"
+                                                TickPlacement="None"
+                                                Maximum="{Binding Volume.MaxValue}"
+                                                Minimum="{Binding Volume.MinValue}"
+                                                Value="{Binding Volume.Value, Mode=TwoWay}" />
+
+                                        <TextBlock Text="{Binding Value, ElementName=Slider}"
+                                                   VerticalAlignment="Center"
+                                                   Width="16" />
+                                    </StackPanel>
+                                </ControlTemplate>
+                            </MenuFlyoutItem.Template>
+                        </MenuFlyoutItem>
+                    </MenuFlyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -16,31 +16,12 @@ namespace SonyAudioControl.Views
             InitializeComponent();
         }
 
-        public DeviceControlViewModel ViewModel => (DeviceControlViewModel)DataContext;
-
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             var viewModel = (DeviceControlViewModel)DataContext;
             await viewModel.InitializeAsync(e.Parameter);
 
-            LoadSourceSelectorOptions();
-        }
-
-        private void LoadSourceSelectorOptions()
-        {
-            var menuFlyout = new MenuFlyout();
-
-            foreach (var source in ViewModel.InputControl.SourceList)
-            {
-                menuFlyout.Items.Add(new MenuFlyoutItem
-                {
-                    Text = source.Title,
-                    Command = ViewModel.InputControl.SelectSourceCommand,
-                    CommandParameter = source.Source
-                });
-            }
-            
-            InputSelector.Flyout = menuFlyout;
-        }
+            UpperToolbar.LoadSourceSelectorOptions();
+        }        
     }
 }
