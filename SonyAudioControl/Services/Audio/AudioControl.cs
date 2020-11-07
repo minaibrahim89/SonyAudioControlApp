@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using SonyAudioControl.Model;
 using SonyAudioControl.Services.Http;
 
-namespace SonyAudioControl.Services.AudioControl
+namespace SonyAudioControl.Services.Audio
 {
     public class AudioControl : IAudioControl
     {

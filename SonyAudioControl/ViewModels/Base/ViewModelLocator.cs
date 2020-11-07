@@ -1,12 +1,13 @@
 ﻿using System;
 using Autofac;
-using SonyAudioControl.Services.AudioControl;
+using SonyAudioControl.Services.Audio;
+using SonyAudioControl.Services.AvContent;
 using SonyAudioControl.Services.Discovery;
 using SonyAudioControl.Services.Http;
 using SonyAudioControl.Services.Navigation;
 using SonyAudioControl.Services.Notification;
 using SonyAudioControl.Services.Storage;
-using SonyAudioControl.Services.SystemControl;
+using SonyAudioControl.Services.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -53,6 +54,7 @@ namespace SonyAudioControl.ViewModels.Base
             builder.RegisterType<LocalStorage>().As<IStorage>().SingleInstance();
             builder.RegisterType<DeviceFinder>().As<IDeviceFinder>().SingleInstance();
             builder.RegisterType<SystemControl>().As<ISystemControl>().SingleInstance();
+            builder.RegisterType<AvContentControl>().As<IAvContentControl>().SingleInstance();
             builder.RegisterType<AudioControl>().As<IAudioControl>().SingleInstance();
             builder.RegisterType<HttpRequestProvider>().As<IHttpRequestProvider>().SingleInstance();
             builder.RegisterType<NotificationListener>().As<INotificationListener>().SingleInstance();

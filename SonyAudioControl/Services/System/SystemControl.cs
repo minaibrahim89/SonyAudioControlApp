@@ -2,7 +2,7 @@
 using SonyAudioControl.Model;
 using SonyAudioControl.Services.Http;
 
-namespace SonyAudioControl.Services.SystemControl
+namespace SonyAudioControl.Services.System
 {
     public class SystemControl : ISystemControl
     {

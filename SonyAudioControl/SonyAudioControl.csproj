@@ -29,6 +29,7 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -41,6 +42,7 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
     <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
@@ -52,6 +54,7 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
     <OutputPath>bin\ARM\Release\</OutputPath>
@@ -64,6 +67,7 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
     <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM64'">
     <DebugSymbols>true</DebugSymbols>
@@ -76,6 +80,7 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
     <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM64'">
     <OutputPath>bin\ARM64\Release\</OutputPath>
@@ -88,6 +93,7 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
     <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -99,6 +105,7 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
@@ -111,6 +118,7 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
     <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
@@ -131,11 +139,15 @@
     <Compile Include="Model\DeviceRequest.cs" />
     <Compile Include="Model\DeviceResponse.cs" />
     <Compile Include="Model\DeviceNotification.cs" />
+    <Compile Include="Model\PlaybackContent.cs" />
+    <Compile Include="Model\PlaybackSource.cs" />
     <Compile Include="Model\PowerStatus.cs" />
     <Compile Include="Model\UI\Command.cs" />
     <Compile Include="Model\VolumeInfo.cs" />
-    <Compile Include="Services\AudioControl\AudioControl.cs" />
-    <Compile Include="Services\AudioControl\IAudioControl.cs" />
+    <Compile Include="Services\Audio\AudioControl.cs" />
+    <Compile Include="Services\Audio\IAudioControl.cs" />
+    <Compile Include="Services\AvContent\AvContentControl.cs" />
+    <Compile Include="Services\AvContent\IAvContentControl.cs" />
     <Compile Include="Services\Http\HttpRequestProvider.cs" />
     <Compile Include="Services\Http\IHttpRequestProvider.cs" />
     <Compile Include="Services\Navigation\INavigation.cs" />
@@ -144,8 +156,8 @@
     <Compile Include="Services\Notification\NotificationListener.cs" />
     <Compile Include="Services\Storage\IStorage.cs" />
     <Compile Include="Services\Storage\LocalStorage.cs" />
-    <Compile Include="Services\SystemControl\ISystemControl.cs" />
-    <Compile Include="Services\SystemControl\SystemControl.cs" />
+    <Compile Include="Services\System\ISystemControl.cs" />
+    <Compile Include="Services\System\SystemControl.cs" />
     <Compile Include="ViewModels\Base\ViewModelBase.cs" />
     <Compile Include="ViewModels\Base\ViewModelLocator.cs" />
     <Compile Include="ViewModels\DeviceControlViewModel.cs" />
@@ -154,6 +166,7 @@
     <Compile Include="Services\Discovery\DeviceFinder.cs" />
     <Compile Include="Services\Discovery\IDeviceFinder.cs" />
     <Compile Include="ViewModels\DiscoveryViewModel.cs" />
+    <Compile Include="ViewModels\InputControlViewModel.cs" />
     <Compile Include="ViewModels\VolumeViewModel.cs" />
     <Compile Include="Views\DeviceControlView.xaml.cs">
       <DependentUpon>DeviceControlView.xaml</DependentUpon>

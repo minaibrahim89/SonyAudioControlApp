@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using SonyAudioControl.Model;
 
-namespace SonyAudioControl.Services.SystemControl
+namespace SonyAudioControl.Services.System
 {
     public interface ISystemControl
     {

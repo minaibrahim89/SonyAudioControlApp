@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 using SonyAudioControl.Model.UI;
-using SonyAudioControl.Services.AudioControl;
+using SonyAudioControl.Services.Audio;
 using SonyAudioControl.ViewModels.Base;
 using Windows.UI.Xaml.Controls;
 

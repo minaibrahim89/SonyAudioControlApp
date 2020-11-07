@@ -2,9 +2,10 @@
 using System.Windows.Input;
 using SonyAudioControl.Model;
 using SonyAudioControl.Model.UI;
-using SonyAudioControl.Services.AudioControl;
+using SonyAudioControl.Services.Audio;
+using SonyAudioControl.Services.AvContent;
 using SonyAudioControl.Services.Notification;
-using SonyAudioControl.Services.SystemControl;
+using SonyAudioControl.Services.System;
 using SonyAudioControl.ViewModels.Base;
 
 namespace SonyAudioControl.ViewModels
@@ -18,13 +19,15 @@ namespace SonyAudioControl.ViewModels
         private string _deviceName;
         private bool _isPowerOn;
 
-        public DeviceControlViewModel(ISystemControl systemControl, IAudioControl audioControl, INotificationListener notificationListener)
+        public DeviceControlViewModel(ISystemControl systemControl, IAudioControl audioControl, IAvContentControl avContentControl,
+            INotificationListener notificationListener)
         {
             _systemControl = systemControl;
             _audioControl = audioControl;
             _notificationListener = notificationListener;
 
             Volume = new VolumeViewModel(audioControl);
+            InputControl = new InputControlViewModel(avContentControl);
 
             TogglePowerCommand = new Command(async() => await TogglePowerAsync());
         }
@@ -43,6 +46,8 @@ namespace SonyAudioControl.ViewModels
 
         public VolumeViewModel Volume { get; }
 
+        public InputControlViewModel InputControl { get; }
+
         public ICommand TogglePowerCommand { get; }
 
         public override async Task InitializeAsync(object args)
@@ -52,6 +57,7 @@ namespace SonyAudioControl.ViewModels
             DeviceName = $"{device.Name} ({device.ModelName})";
             await SetIsPowerOnAsync();
             await Volume.InitializeAsync(device);
+            await InputControl.InitializeAsync(device);
 
             _ = _notificationListener.SubscribeForNotificationsAsync(_deviceUrl, HandleNotification);
         }
@@ -69,6 +75,7 @@ namespace SonyAudioControl.ViewModels
             {
                 case "notifyPowerStatus": HandlePowerNotification(notification); break;
                 case "notifyVolumeInformation": Volume.HandleVolumeNotification(notification); break;
+                case "notifyPlayingContentInfo": InputControl.HandlePlayingContentInfoNotification(notification); break;
             }
         }
 

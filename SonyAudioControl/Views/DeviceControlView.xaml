@@ -19,7 +19,7 @@
                         Spacing="0">
                 <AppBarToggleButton Style="{StaticResource CommandBarFlyoutAppBarToggleButtonStyle}"
                                     VerticalAlignment="Center"
-                                    IsChecked="{Binding IsPowerOn}"                                    
+                                    IsChecked="{Binding IsPowerOn}"
                                     Command="{Binding TogglePowerCommand}">
                     <AppBarToggleButton.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets"
@@ -39,21 +39,12 @@
             <StackPanel Grid.Column="1"
                         Orientation="Horizontal"
                         HorizontalAlignment="Right">
-                <AppBarButton Icon="SwitchApps"
-                              Label="Bluetooth Audio"
+                <AppBarButton x:Name="InputSelector"
+                              Icon="SwitchApps"
+                              Label="{Binding InputControl.CurrentSourceName}"
+                              d:Label="TV"
                               MinWidth="80"
-                              Style="{StaticResource AppBarButtonRevealOverflowStyle}">
-                    <AppBarButton.Flyout>
-                        <MenuFlyout Placement="Bottom">
-                            <MenuFlyoutItem Text="TV" />
-                            <MenuFlyoutItem Text="HDMI 1" />
-                            <MenuFlyoutItem Text="HDMI 2" />
-                            <MenuFlyoutItem Text="Analog" />
-                            <MenuFlyoutItem Text="USB" />
-                            <MenuFlyoutItem Text="Bluetooth Audio" />
-                        </MenuFlyout>
-                    </AppBarButton.Flyout>
-                </AppBarButton>
+                              Style="{StaticResource AppBarButtonRevealOverflowStyle}" />
                 <AppBarButton Icon="{Binding Volume.VolumeIcon}"
                               d:Icon="Volume"
                               Label="Volume"
