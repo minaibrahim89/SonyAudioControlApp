@@ -97,8 +97,7 @@ namespace SonyAudioControl.ViewModels
 
         private void SetVolumeAsync(int volume)
         {
-            if (volume != Value)
-                _audioControl.SetVolumeAsync(_deviceUrl, volume);
+            _audioControl.SetVolumeAsync(_deviceUrl, volume);
         }
 
         private async void ToggleMuteAsync()
