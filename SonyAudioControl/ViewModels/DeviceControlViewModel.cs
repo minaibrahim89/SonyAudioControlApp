@@ -1,10 +1,15 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using SonyAudioControl.Model;
 using SonyAudioControl.Model.UI;
 using SonyAudioControl.Services.Audio;
 using SonyAudioControl.Services.AvContent;
 using SonyAudioControl.Services.Notification;
+using SonyAudioControl.Services.Storage;
 using SonyAudioControl.Services.System;
 using SonyAudioControl.ViewModels.Base;
 
@@ -13,23 +18,22 @@ namespace SonyAudioControl.ViewModels
     public class DeviceControlViewModel : ViewModelBase
     {
         private readonly ISystemControl _systemControl;
-        private readonly IAudioControl _audioControl;
         private readonly INotificationListener _notificationListener;
+        private readonly IStorage _storage;
         private string _deviceUrl;
         private string _deviceName;
         private bool _isPowerOn;
 
         public DeviceControlViewModel(ISystemControl systemControl, IAudioControl audioControl, IAvContentControl avContentControl,
-            INotificationListener notificationListener)
+            INotificationListener notificationListener, IStorage storage)
         {
             _systemControl = systemControl;
-            _audioControl = audioControl;
             _notificationListener = notificationListener;
-
+            _storage = storage;
             Volume = new VolumeViewModel(audioControl);
             InputControl = new InputControlViewModel(avContentControl);
 
-            TogglePowerCommand = new Command(async() => await TogglePowerAsync());
+            TogglePowerCommand = new Command(async () => await TogglePowerAsync());
         }
 
         public string DeviceName
@@ -40,7 +44,7 @@ namespace SonyAudioControl.ViewModels
 
         public bool IsPowerOn
         {
-            get => _isPowerOn; 
+            get => _isPowerOn;
             set => SetProperty(ref _isPowerOn, value);
         }
 
@@ -54,12 +58,30 @@ namespace SonyAudioControl.ViewModels
         {
             var device = (DeviceViewModel)args;
             _deviceUrl = device.BaseUrl;
-            DeviceName = $"{device.Name} ({device.ModelName})";
-            await SetIsPowerOnAsync();
-            await Volume.InitializeAsync(device);
-            await InputControl.InitializeAsync(device);
 
-            _ = _notificationListener.SubscribeForNotificationsAsync(_deviceUrl, HandleNotification);
+            try
+            {
+                DeviceName = $"{device.Name} ({device.ModelName})";
+                await SetIsPowerOnAsync();
+                await Volume.InitializeAsync(device);
+                await InputControl.InitializeAsync(device);
+
+                _ = _notificationListener.SubscribeForNotificationsAsync(_deviceUrl, HandleNotification);
+            }
+            catch (HttpRequestException ex)
+            {
+                Debug.WriteLine(ex);
+                await RemoveDeviceUrlFromStorageAsync(_deviceUrl);
+                await Navigation.NavigateBackAsync();
+            }
+        }
+
+        private async Task RemoveDeviceUrlFromStorageAsync(string deviceUrl)
+        {
+            if (!await _storage.TryGetAsync<IEnumerable<DeviceDescription>>("devices", out var devices))
+                return;
+
+            await _storage.SaveAsync("devices", devices.Where(d => d.Device.X_ScalarWebAPI_DeviceInfo.X_ScalarWebAPI_BaseURL != _deviceUrl));
         }
 
         private async Task SetIsPowerOnAsync()

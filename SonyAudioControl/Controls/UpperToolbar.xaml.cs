@@ -16,6 +16,9 @@ namespace SonyAudioControl.Controls
 
         internal void LoadSourceSelectorOptions()
         {
+            if (ViewModel?.InputControl.SourceList == null)
+                return;
+
             var menuFlyout = new MenuFlyout();
 
             foreach (var source in ViewModel.InputControl.SourceList)

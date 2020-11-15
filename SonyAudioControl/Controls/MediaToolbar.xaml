@@ -18,10 +18,12 @@
         </Grid.ColumnDefinitions>
 
         <Grid Background="{ThemeResource SystemChromeMediumColor}">
-            <Image Source="{Binding InputControl.PlaybackThumbnailUrl, TargetNullValue='ms-appx:///Assets/Images/Music.png', FallbackValue='ms-appx:///Assets/Images/Music.png'}"
+            <Image Source="{Binding InputControl.PlaybackThumbnail, TargetNullValue='ms-appx:///Assets/Images/Music.png', FallbackValue='ms-appx:///Assets/Images/Music.png'}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
                    Width="120"
                    Height="120"
-                   Stretch="UniformToFill" />
+                   Stretch="Uniform" />
         </Grid>
 
         <Grid Grid.Column="1"
@@ -43,13 +45,10 @@
             <AppBarButton Grid.Column="1"
                           Icon="Previous"
                           Command="{Binding InputControl.PlayPreviousCommand}"
-                          IsHoldingEnabled="False"
                           Style="{StaticResource CommandBarFlyoutAppBarButtonStyle}" />
             <AppBarButton Grid.Column="2"
                           Icon="Next"
                           Command="{Binding InputControl.PlayNextCommand}"
-                          IsHoldingEnabled="True"
-                          Holding="AppBarButton_Holding"
                           Style="{StaticResource CommandBarFlyoutAppBarButtonStyle}" />
 
             <StackPanel Grid.Column="3"

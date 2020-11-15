@@ -12,6 +12,8 @@ using SonyAudioControl.ViewModels.Base;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace SonyAudioControl.ViewModels
 {
@@ -23,10 +25,9 @@ namespace SonyAudioControl.ViewModels
         private string _currentSourceName;
         private IconElement _playPauseIcon;
         private Timer _playbackUpdateTimer;
-        private string _playbackThumbnailUrl;
+        private ImageSource _playbackThumbnail;
         private string _elapsedPlaybackTimeText;
         private string _playbackDurationText;
-        private int _elapsedPlaybackTimeMsec;
         private bool _showPlaybackProgress;
 
         public InputControlViewModel(IAvContentControl avContentControl)
@@ -70,10 +71,10 @@ namespace SonyAudioControl.ViewModels
             set => SetProperty(ref _currentSourceName, value);
         }
 
-        public string PlaybackThumbnailUrl
+        public ImageSource PlaybackThumbnail
         {
-            get => _playbackThumbnailUrl;
-            set => SetProperty(ref _playbackThumbnailUrl, value);
+            get => _playbackThumbnail;
+            set => SetProperty(ref _playbackThumbnail, value);
         }
 
         public string ElapsedPlaybackTimeText
@@ -122,7 +123,8 @@ namespace SonyAudioControl.ViewModels
         private void OnCurrentContentChanged(PlaybackContent content)
         {
             CurrentSourceName = GetSourceName(content?.Source);
-            PlaybackThumbnailUrl = content.Content?.ThumbnailUrl;
+            UpdatePlaybackThumbnail(content);
+
             PlayPauseIcon = CurrentContent.StateInfo?.State switch
             {
                 "PLAYING" => new SymbolIcon(Symbol.Pause),
@@ -138,6 +140,23 @@ namespace SonyAudioControl.ViewModels
             PlaybackDurationText = (duration.Hours == 0 ? duration.Hours.ToString("0") : "") + $"{duration.Minutes:0}:{duration.Seconds:00}";
         }
 
+        private void UpdatePlaybackThumbnail(PlaybackContent content)
+        {
+            var thumbnailUrl = content.Content?.ThumbnailUrl;
+
+            if (thumbnailUrl == null && content.Source.StartsWith("alexa:audio") == true)
+                thumbnailUrl = "ms-appx:///Assets/Images/Alexa.png";
+            else if (thumbnailUrl == null && content.Source.StartsWith("cast:audio"))
+                thumbnailUrl = "ms-appx:///Assets/Images/Chromecast.png";
+
+            var thumbnailUri = new Uri(string.IsNullOrWhiteSpace(thumbnailUrl) ? "ms-appx:///Assets/Images/Music.png" : thumbnailUrl);
+
+            if (PlaybackThumbnail is BitmapImage bitmap && bitmap.UriSource == thumbnailUri)
+                return;
+
+            PlaybackThumbnail = new BitmapImage(thumbnailUri);
+        }
+
         public string GetSourceName(string source)
         {
             if (source.IsNullOrEmpty())
@@ -146,7 +165,9 @@ namespace SonyAudioControl.ViewModels
             if (source.StartsWith("netService:audio"))
                 return "Music Streaming Service";
 
-            return SourceList.Single(s => s.Source == CurrentContent.Source).Title;
+            return source.StartsWith("alexa:audio") 
+                ? "Alexa" 
+                : SourceList.Single(s => s.Source == CurrentContent.Source).Title;
         }
 
         private async Task SelectSourceAsync(string source)
