@@ -66,6 +66,7 @@ namespace SonyAudioControl.ViewModels.Base
         {
             builder.RegisterType<DiscoveryViewModel>().AsSelf();
             builder.RegisterType<DeviceControlViewModel>().AsSelf();
+            builder.RegisterType<SoundSettingsViewModel>().AsSelf();
 
             return builder;
         }

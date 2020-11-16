@@ -11,5 +11,7 @@ namespace SonyAudioControl.Services.Audio
         Task SetVolumeAsync(string deviceUrl, int volume);
 
         Task SetMuteAsync(string deviceUrl, bool mute);
+
+        Task<SoundSetting[]> GetSoundSettingsAsync(string deviceUrl);
     }
 }

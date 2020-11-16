@@ -41,16 +41,6 @@ namespace SonyAudioControl.ViewModels
             PlayPreviousCommand = new Command(async () => await PlayPreviousAsync());
         }
 
-        private async void UpdateCurrentContent(object state)
-        {
-            if (CurrentContent?.StateInfo?.State != "PLAYING")
-                return;
-
-            _ = CoreApplication.MainView.Dispatcher.RunAsync(
-                CoreDispatcherPriority.Normal,
-                async () => CurrentContent = await _avContentControl.GetPlayingContentInfoAsync(_deviceUrl));
-        }
-
         public PlaybackSource[] SourceList { get; private set; }
 
         public PlaybackContent CurrentContent
@@ -155,6 +145,16 @@ namespace SonyAudioControl.ViewModels
                 return;
 
             PlaybackThumbnail = new BitmapImage(thumbnailUri);
+        }
+
+        private void UpdateCurrentContent(object state)
+        {
+            if (CurrentContent?.StateInfo?.State != "PLAYING")
+                return;
+
+            _ = CoreApplication.MainView.Dispatcher.RunAsync(
+                CoreDispatcherPriority.Normal,
+                async () => CurrentContent = await _avContentControl.GetPlayingContentInfoAsync(_deviceUrl));
         }
 
         public string GetSourceName(string source)

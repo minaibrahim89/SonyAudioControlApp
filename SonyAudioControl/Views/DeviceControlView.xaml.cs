@@ -1,6 +1,10 @@
-﻿using SonyAudioControl.ViewModels;
+﻿using System;
+using Windows.UI.Xaml;
+using SonyAudioControl.ViewModels;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using NavigationView = Microsoft.UI.Xaml.Controls.NavigationView;
+using NavigationViewItemInvokedEventArgs = Microsoft.UI.Xaml.Controls.NavigationViewItemInvokedEventArgs;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -16,12 +20,35 @@ namespace SonyAudioControl.Views
             InitializeComponent();
         }
 
+        private DeviceControlViewModel ViewModel => DataContext as DeviceControlViewModel;
+
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            var viewModel = (DeviceControlViewModel)DataContext;
-            await viewModel.InitializeAsync(e.Parameter);
+            await ViewModel.InitializeAsync(e.Parameter);
 
             UpperToolbar.LoadSourceSelectorOptions();
-        }        
+        }
+
+        private void DeviceControlView_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            NavigationView.IsPaneOpen = false;
+            NavigationView.SelectedItem = SoundSettings;
+            ContentFrame.NavigateToType(typeof(SoundSettingsView), null, new FrameNavigationOptions());
+        }
+
+        private void NavigationView_OnItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+        {
+            var navOptions = new FrameNavigationOptions
+            {
+                TransitionInfoOverride = args.RecommendedNavigationTransitionInfo
+            };
+            Type pageType = null;
+            
+            if (args.InvokedItemContainer == SoundSettings)
+                pageType = typeof(SoundSettingsView);
+
+            NavigationView.Header = args.InvokedItem;
+            ContentFrame.NavigateToType(pageType, null, navOptions);
+        }
     }
 }

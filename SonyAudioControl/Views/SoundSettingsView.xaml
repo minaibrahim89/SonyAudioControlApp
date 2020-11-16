@@ -1,0 +1,58 @@
+﻿<Page x:Class="SonyAudioControl.Views.SoundSettingsView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+      xmlns:base="using:SonyAudioControl.ViewModels.Base"
+      xmlns:templateSelectors="using:SonyAudioControl.TemplateSelectors"
+      mc:Ignorable="d"
+      Background="{ThemeResource SystemControlAcrylicWindowBrush}"
+      base:ViewModelLocator.AutoWireViewModel="EnableAndInitialize">
+
+    <Page.Resources>
+        <DataTemplate x:Key="EnumTemplate">
+            <StackPanel HorizontalAlignment="Center">
+                <TextBlock Text="{Binding Title}" />
+                <ComboBox Width="200" 
+                          IsEnabled="{Binding IsAvailable}"
+                          ItemsSource="{Binding Options}"
+                          DisplayMemberPath="Title"
+                          SelectedItem="{Binding SelectedOption}" />
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="IntegerTemplate">
+            <StackPanel HorizontalAlignment="Center">
+                <TextBlock Text="{Binding Title}" />
+                <Slider Width="200"
+                        HorizontalAlignment="Left"
+                        IsEnabled="{Binding IsAvailable}"
+                        Minimum="{Binding Options[0].Min}"
+                        Maximum="{Binding Options[0].Max}"
+                        StepFrequency="{Binding Options[0].Step}"
+                        Value="{Binding CurrentValue}" />
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="DefaultTemplate">
+            <StackPanel>
+                <TextBlock Text="{Binding Title}" />
+            </StackPanel>
+        </DataTemplate>
+    </Page.Resources>
+
+    <ScrollViewer Padding="16">
+        <muxc:ItemsRepeater ItemsSource="{Binding SoundSettings}">
+            <muxc:ItemsRepeater.Layout>
+                <muxc:StackLayout Spacing="8" />
+            </muxc:ItemsRepeater.Layout>
+
+            <muxc:ItemsRepeater.ItemTemplate>
+                <templateSelectors:SoundSettingTemplateSelector EnumTemplate="{StaticResource EnumTemplate}"
+                                                                IntegerTemplate="{StaticResource IntegerTemplate}"
+                                                                DefaultTemplate="{StaticResource DefaultTemplate}" />
+            </muxc:ItemsRepeater.ItemTemplate>
+        </muxc:ItemsRepeater>
+    </ScrollViewer>
+</Page>

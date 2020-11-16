@@ -71,10 +71,10 @@ namespace SonyAudioControl.ViewModels
 
         private async Task<IEnumerable<DeviceViewModel>> GetSavedDevicesAsync()
         {
-            if (!await _storage.TryGetAsync<DeviceDescription[]>("devices", out var devices) || devices.Length == 0)
+            if (!await _storage.TryGetAsync<DeviceDescription[]>(StorageKeys.Devices, out var devices) || devices.Length == 0)
                 return Array.Empty<DeviceViewModel>();
 
-            return devices.Select(d => new DeviceViewModel(d.Device, d.DescriptionLocation));
+            return devices.Select(d => new DeviceViewModel(d.Device, d.DescriptionLocation, _storage));
         }
 
         private async Task<IEnumerable<DeviceViewModel>> SearchForDevicesAsync()
@@ -83,7 +83,7 @@ namespace SonyAudioControl.ViewModels
 
             await _storage.SaveAsync("devices", deviceDescriptions);
 
-            return deviceDescriptions.Select(d => new DeviceViewModel(d.Device, d.DescriptionLocation));
+            return deviceDescriptions.Select(d => new DeviceViewModel(d.Device, d.DescriptionLocation, _storage));
         }
 
         private async Task SetDevicesAsync(IEnumerable<DeviceViewModel> viewModels)

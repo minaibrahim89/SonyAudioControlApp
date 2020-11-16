@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using SonyAudioControl.Model;
 using SonyAudioControl.Model.UI;
+using SonyAudioControl.Services.Storage;
 using SonyAudioControl.ViewModels.Base;
 
 namespace SonyAudioControl.ViewModels
@@ -11,10 +12,12 @@ namespace SonyAudioControl.ViewModels
     public class DeviceViewModel : ViewModelBase
     {
         private readonly Uri _deviceDescriptionLocation;
+        private readonly IStorage _storage;
 
-        public DeviceViewModel(Device device, Uri deviceDescriptionLocation)
+        public DeviceViewModel(Device device, Uri deviceDescriptionLocation, IStorage storage)
         {
             _deviceDescriptionLocation = deviceDescriptionLocation;
+            _storage = storage;
             Name = device.FriendlyName;
             ModelName = device.ModelName;
 
@@ -68,6 +71,7 @@ namespace SonyAudioControl.ViewModels
 
         private async Task SelectDeviceAsync()
         {
+            await _storage.SaveAsync(StorageKeys.CurrentDevice, BaseUrl);
             await Navigation.NavigateToAsync<DeviceControlViewModel>(this);
         }
     }

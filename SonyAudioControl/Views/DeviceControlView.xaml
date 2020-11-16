@@ -5,19 +5,43 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:base="using:SonyAudioControl.ViewModels.Base"
       xmlns:controls="using:SonyAudioControl.Controls"
+      xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
       mc:Ignorable="d"
       Background="{ThemeResource SystemControlAcrylicWindowBrush}"
-      base:ViewModelLocator.AutoWireViewModel="Enable">
-    
+      base:ViewModelLocator.AutoWireViewModel="Enable"
+      Loaded="DeviceControlView_OnLoaded">
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        
-        <controls:UpperToolbar x:Name="UpperToolbar"/>
 
-        <controls:MediaToolbar x:Name="MediaToolbar" Grid.Row="2"/>
+        <controls:UpperToolbar x:Name="UpperToolbar" />
+        <muxc:NavigationView x:Name="NavigationView"
+                             Grid.Row="1"
+                             SelectionFollowsFocus="Enabled"
+                             IsBackButtonVisible="Collapsed"
+                             Header="{Binding SelectedItem.Content, ElementName=NavigationView}"
+                             ItemInvoked="NavigationView_OnItemInvoked">
+            <muxc:NavigationView.MenuItems>
+                <muxc:NavigationViewItem x:Name="SoundSettings"
+                                         Icon="Audio"
+                                         Content="Sound Settings" />
+            </muxc:NavigationView.MenuItems>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Frame x:Name="ContentFrame"
+                       Grid.Row="0" />
+                <controls:MediaToolbar x:Name="MediaToolbar"
+                                       Grid.Row="1" />
+            </Grid>
+        </muxc:NavigationView>
     </Grid>
+
 </Page>
