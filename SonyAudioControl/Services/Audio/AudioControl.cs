@@ -63,5 +63,23 @@ namespace SonyAudioControl.Services.Audio
 
             return await _httpRequestProvider.PostAsync<SoundSetting[]>(Path.Combine(deviceUrl, "audio"), request);
         }
+
+        public async Task SetSoundSettingAsync(string deviceUrl, string target, string value)
+        {
+            var request = new DeviceRequest
+            {
+                Method = "setSoundSettings",
+                Version = "1.1",
+                Params = new[]
+                {
+                    new
+                    {
+                        settings = new[] { new { target, value } }
+                    }
+                }
+            };
+
+            await _httpRequestProvider.PostAsync<object>(Path.Combine(deviceUrl, "audio"), request);
+        }
     }
 }

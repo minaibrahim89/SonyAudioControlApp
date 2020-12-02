@@ -18,20 +18,28 @@
                           IsEnabled="{Binding IsAvailable}"
                           ItemsSource="{Binding Options}"
                           DisplayMemberPath="Title"
-                          SelectedItem="{Binding SelectedOption}" />
+                          SelectedItem="{Binding SelectedOption, Mode=TwoWay}" />
             </StackPanel>
         </DataTemplate>
 
         <DataTemplate x:Key="IntegerTemplate">
             <StackPanel HorizontalAlignment="Center">
-                <TextBlock Text="{Binding Title}" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="{Binding Title}" />
+                    <TextBlock Grid.Column="1" Text="{Binding CurrentValue}" />
+                </Grid>                
                 <Slider Width="200"
                         HorizontalAlignment="Left"
+                        IsThumbToolTipEnabled="False"
                         IsEnabled="{Binding IsAvailable}"
                         Minimum="{Binding Options[0].Min}"
                         Maximum="{Binding Options[0].Max}"
                         StepFrequency="{Binding Options[0].Step}"
-                        Value="{Binding CurrentValue}" />
+                        Value="{Binding CurrentValue, Mode=TwoWay}" />
             </StackPanel>
         </DataTemplate>
 

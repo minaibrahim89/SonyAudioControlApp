@@ -61,7 +61,7 @@ namespace SonyAudioControl.ViewModels
 
             try
             {
-                DeviceName = $"{device.Name} ({device.ModelName})";
+                DeviceName = device.Name == device.ModelName ? device.ModelName : $"{device.Name} ({device.ModelName})";
                 await SetIsPowerOnAsync();
                 await Volume.InitializeAsync(device);
                 await InputControl.InitializeAsync(device);
@@ -81,7 +81,7 @@ namespace SonyAudioControl.ViewModels
             if (!await _storage.TryGetAsync<IEnumerable<DeviceDescription>>("devices", out var devices))
                 return;
 
-            await _storage.SaveAsync("devices", devices.Where(d => d.Device.X_ScalarWebAPI_DeviceInfo.X_ScalarWebAPI_BaseURL != _deviceUrl));
+            await _storage.SaveAsync("devices", devices.Where(d => d.Device.X_ScalarWebAPI_DeviceInfo.X_ScalarWebAPI_BaseURL != deviceUrl));
         }
 
         private async Task SetIsPowerOnAsync()
