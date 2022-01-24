@@ -53,7 +53,7 @@ namespace SonyAudioControl.ViewModels
             var (target, currentValue) = ((string)apiMappingUpdate.target, (string)apiMappingUpdate.currentValue);
             var targetSetting = SoundSettings.SingleOrDefault(setting => setting.Target.Contains(target, StringComparison.OrdinalIgnoreCase));
 
-            targetSetting.SetValue(currentValue);
+            targetSetting?.SetValue(currentValue);
         }
     }
 }
