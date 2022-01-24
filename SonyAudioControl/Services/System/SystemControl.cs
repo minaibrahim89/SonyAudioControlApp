@@ -13,6 +13,17 @@ namespace SonyAudioControl.Services.System
             _httpRequestProvider = httpRequestProvider;
         }
 
+        public async Task<SystemInformation> GetSystemInformationAsync(string deviceUrl)
+        {
+            var request = new DeviceRequest
+            {
+                Method = "getSystemInformation",
+                Version = "1.4"
+            };
+
+            return await _httpRequestProvider.PostAsync<SystemInformation>($"{deviceUrl}/system", request);
+        }
+
         public async Task<PowerStatus> GetPowerStatusAsync(string deviceUrl)
         {
             var request = new DeviceRequest

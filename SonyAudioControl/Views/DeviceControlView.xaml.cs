@@ -43,11 +43,18 @@ namespace SonyAudioControl.Views
                 TransitionInfoOverride = args.RecommendedNavigationTransitionInfo
             };
             Type pageType = null;
-            
-            if (args.InvokedItemContainer == SoundSettings)
-                pageType = typeof(SoundSettingsView);
 
-            NavigationView.Header = args.InvokedItem;
+            if (args.IsSettingsInvoked)
+            {
+                pageType = typeof(SettingsView);
+                NavigationView.Header = "Settings";
+            }
+            else if (args.InvokedItemContainer == SoundSettings)
+            {
+                pageType = typeof(SoundSettingsView);
+                NavigationView.Header = args.InvokedItem;
+            }
+
             ContentFrame.NavigateToType(pageType, null, navOptions);
         }
     }

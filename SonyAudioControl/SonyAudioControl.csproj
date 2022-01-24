@@ -146,6 +146,7 @@
     <Compile Include="Model\PlaybackSource.cs" />
     <Compile Include="Model\PowerStatus.cs" />
     <Compile Include="Model\SoundSetting.cs" />
+    <Compile Include="Model\SystemInformation.cs" />
     <Compile Include="Model\UI\Command.cs" />
     <Compile Include="Model\VolumeInfo.cs" />
     <Compile Include="Services\Audio\AudioControl.cs" />
@@ -173,15 +174,20 @@
     <Compile Include="Services\Discovery\DeviceFinder.cs" />
     <Compile Include="Services\Discovery\IDeviceFinder.cs" />
     <Compile Include="ViewModels\DiscoveryViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\InputControlViewModel.cs" />
     <Compile Include="ViewModels\SoundSettingsViewModel.cs" />
     <Compile Include="ViewModels\SoundSettingViewModel.cs" />
+    <Compile Include="ViewModels\SystemInformationViewModel.cs" />
     <Compile Include="ViewModels\VolumeViewModel.cs" />
     <Compile Include="Views\DeviceControlView.xaml.cs">
       <DependentUpon>DeviceControlView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DiscoveryView.xaml.cs">
       <DependentUpon>DiscoveryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SoundSettingsView.xaml.cs">
       <DependentUpon>SoundSettingsView.xaml</DependentUpon>
@@ -266,6 +272,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\DiscoveryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

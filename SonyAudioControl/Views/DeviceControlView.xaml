@@ -22,9 +22,16 @@
                              Grid.Row="1"
                              SelectionFollowsFocus="Enabled"
                              IsBackButtonVisible="Collapsed"
-                             IsSettingsVisible="False"
-                             Header="{Binding SelectedItem.Content, ElementName=NavigationView}"
+                             IsSettingsVisible="True"
+                             Header="{Binding SelectedItem.Content, ElementName=NavigationView}"                             
                              ItemInvoked="NavigationView_OnItemInvoked">
+            <muxc:NavigationView.HeaderTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}"
+                               HorizontalAlignment="Center"
+                               Style="{StaticResource HeaderTextBlockStyle}"/>
+                </DataTemplate>
+            </muxc:NavigationView.HeaderTemplate>
             <muxc:NavigationView.MenuItems>
                 <muxc:NavigationViewItem x:Name="SoundSettings"
                                          Icon="Audio"
