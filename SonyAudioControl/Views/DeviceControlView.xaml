@@ -22,6 +22,7 @@
                              Grid.Row="1"
                              SelectionFollowsFocus="Enabled"
                              IsBackButtonVisible="Collapsed"
+                             IsSettingsVisible="False"
                              Header="{Binding SelectedItem.Content, ElementName=NavigationView}"
                              ItemInvoked="NavigationView_OnItemInvoked">
             <muxc:NavigationView.MenuItems>
