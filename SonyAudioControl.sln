@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30611.23
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.35906.104
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SonyAudioControl", "SonyAudioControl\SonyAudioControl.csproj", "{B0388EAA-B48F-47C1-B5C0-5DE0A9A7F0FD}"
 EndProject
@@ -23,6 +23,7 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{B0388EAA-B48F-47C1-B5C0-5DE0A9A7F0FD}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{B0388EAA-B48F-47C1-B5C0-5DE0A9A7F0FD}.Debug|Any CPU.Build.0 = Debug|x86
+		{B0388EAA-B48F-47C1-B5C0-5DE0A9A7F0FD}.Debug|Any CPU.Deploy.0 = Debug|x86
 		{B0388EAA-B48F-47C1-B5C0-5DE0A9A7F0FD}.Debug|ARM.ActiveCfg = Debug|ARM
 		{B0388EAA-B48F-47C1-B5C0-5DE0A9A7F0FD}.Debug|ARM.Build.0 = Debug|ARM
 		{B0388EAA-B48F-47C1-B5C0-5DE0A9A7F0FD}.Debug|ARM.Deploy.0 = Debug|ARM
